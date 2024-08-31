@@ -1,34 +1,47 @@
-# site
+# Acesso Restrito
 
-![enbyware](https://pride-badges.pony.workers.dev/static/v1?label=enbyware&labelColor=%23555&stripeWidth=8&stripeColors=FCF434%2CFFFFFF%2C9C59D1%2C2C2C2C)
-![dependency status](https://img.shields.io/librariesio/github/Xe/site)
-![license](https://img.shields.io/github/license/Xe/site)
-![language count](https://img.shields.io/github/languages/count/Xe/site)
-![repo size](https://img.shields.io/github/repo-size/Xe/site)
+Este projeto inclui um código HTML que verifica o IP do usuário para restringir o acesso a um formulário. O código é útil para garantir que o formulário só possa ser acessado por usuários dentro da rede da escola.
 
-My personal/portfolio website.
+## Código HTML
 
-## <big>Information for people wishing to use this code</big>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Restrito</title>
+</head>
+<body>
+    <h1>Acesso Restrito</h1>
+    <p>Este formulário só pode ser acessado dentro da escola.</p>
+    <script>
+        // Função para obter o IP do usuário via API pública
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api64.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Erro ao obter o IP:', error);
+                return null;
+            }
+        }
 
-Don't. This code is not made for you to be able to use without extensive
-modification. The [license](https://github.com/Xe/site/blob/main/LICENSE) of
-this code is intentionally chosen in such a way that it will make reuse of this
-website code verbatim very difficult.
+        // Verifica o IP do usuário
+        async function checkAccess() {
+            const userIP = await getUserIP();
+            const allowedIP = 'SEU_IP_ESCOLA_AQUI'; // Coloque o IP ou faixa de IP permitida
 
-If you are still adamant about using this backend, please keep several things in
-mind:
+            if (userIP === allowedIP) {
+                window.location.href = 'https://docs.google.com/forms/d/YOUR_FORM_ID/viewform'; // Substitua pelo link do seu formulário
+            } else {
+                document.body.innerHTML += '<p>Você não está na rede da escola. O acesso ao formulário foi bloqueado.</p>';
+            }
+        }
 
-1. All blog content is all rights reserved. I aggressively pursue and report
-   content theft.
-2. You _must_ fully comply with the license. I will aggressively pursue people
-   that are not in compliance with the license.
-3. You are on your own. I will not help you. This is code I made for myself and
-   it's only really open source as a side effect of making deployment on NixOS
-   easier. Please do not be the person that makes me have to take this repo
-   closed source.
-4. Upon security issues being found and remediated, you will not be notified
-   about issues or remediation instructions.
-
-This is probably not what you are looking for. Make your own website. Look into
-[Hugo](https://gohugo.io/) or [Zola](https://www.getzola.org/). They are going to
-be better maintained than this site will be.
+        // Executa a verificação
+        checkAccess();
+    </script>
+</body>
+</html>
