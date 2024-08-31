@@ -1,0 +1,11 @@
+*.asar
+cw.tar
+.env
+.DS_Store
+/result-*
+/result
+.#*
+/target
+.patreon.json
+.direnv
+node_modules
